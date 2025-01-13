@@ -1,0 +1,7 @@
+{
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "code-style.md" // import instructions from file `code-style.md`
+    }
+  ],
+}
