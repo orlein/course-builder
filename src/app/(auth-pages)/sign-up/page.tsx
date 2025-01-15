@@ -31,53 +31,62 @@ export default async function SignUpPage(props: {
       <div className={cn('flex flex-col gap-6 w-full')}>
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Signup</CardTitle>
+            <CardTitle className="text-2xl">회원가입</CardTitle>
             <CardDescription>
-              Enter your email and password to create an account
+              이메일 주소와 비밀번호를 입력해주세요.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">이메일</Label>
                   <Input
                     id="email"
                     type="email"
+                    name="email"
                     placeholder="m@example.com"
                     required
                   />
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">비밀번호</Label>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                  />
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
-                    <Label htmlFor="password">Confirm Password</Label>
+                    <Label htmlFor="password">비밀번호 확인</Label>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    name="confirm-password"
+                    type="password"
+                    required
+                  />
                 </div>
                 <SubmitButton
                   className="w-full"
                   pendingText="Signing Up..."
                   formAction={signUpAction}
                 >
-                  Signup
+                  회원가입
                 </SubmitButton>
-                {/* <Button variant="outline" className="w-full">
-              Login with Google
-            </Button> */}
               </div>
               <div className="mt-4 text-center text-sm">
-                Already have an account?{' '}
+                계정이 있으신가요?{' '}
                 <Link href="/login" className="underline underline-offset-4">
-                  Login
+                  로그인
                 </Link>
               </div>
             </form>
+            <FormMessage message={searchParams} />
           </CardContent>
         </Card>
       </div>

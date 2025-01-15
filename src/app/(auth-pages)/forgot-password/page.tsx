@@ -13,19 +13,19 @@ export default async function ForgotPassword(props: {
     <>
       <form className="flex-1 flex flex-col w-full gap-2 text-foreground [&>input]:mb-6 min-w-64 mx-auto">
         <div>
-          <h1 className="text-2xl font-medium">Reset Password</h1>
+          <h1 className="text-2xl font-medium">비밀번호 재설정하기</h1>
           <p className="text-sm text-secondary-foreground">
-            Already have an account?{' '}
+            이미 계정이 있으신가요?
             <Link className="text-primary underline" href="/sign-in">
-              Sign in
+              로그인
             </Link>
           </p>
         </div>
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">이메일</Label>
           <Input name="email" placeholder="you@example.com" required />
           <SubmitButton formAction={forgotPasswordAction}>
-            Reset Password
+            비밀번호 재설정 링크 보내기
           </SubmitButton>
           <FormMessage message={searchParams} />
         </div>

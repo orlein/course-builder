@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { signOutAction } from '../(auth-pages)/sign-out/action';
+import Link from 'next/link';
 
 export default async function ProfilePage(props: {
   searchParams: Promise<Message>;
@@ -15,14 +16,26 @@ export default async function ProfilePage(props: {
   const searchParams = await props.searchParams;
 
   if (!user) {
-    return redirect('/login');
+    return (
+      <>
+        <div>
+          <h1 className="text-2xl font-bold">개인정보 및 설정</h1>
+          <p className="mt-2">로그인이 필요합니다.</p>
+          <div>
+            <Button variant={'outline'} asChild>
+              <Link href="/login">로그인</Link>
+            </Button>
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (
     <>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold">Profile Page</h1>
-        <p className="mt-2">Welcome, {user.email}.</p>
+        <h1 className="text-2xl font-bold">개인정보 및 설정</h1>
+        <p className="mt-2">{user.email}님, 환영합니다.</p>
         <Image
           src="/profile-pic.jpg"
           alt="Profile Picture"
@@ -32,7 +45,7 @@ export default async function ProfilePage(props: {
         />
         <form action={signOutAction}>
           <Button type="submit" variant={'outline'}>
-            Sign out
+            로그아웃
           </Button>
         </form>
       </div>

@@ -7,6 +7,7 @@ import { headers } from 'next/headers';
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();
+  const passwordConfirm = formData.get('password-confirm')?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get('origin');
 
@@ -14,7 +15,15 @@ export const signUpAction = async (formData: FormData) => {
     return encodedRedirect(
       'error',
       '/sign-up',
-      'Email and password are required',
+      '이메일과 비밀번호를 입력해주세요.',
+    );
+  }
+
+  if (password !== passwordConfirm) {
+    return encodedRedirect(
+      'error',
+      '/sign-up',
+      '비밀번호가 일치하지 않습니다.',
     );
   }
 
@@ -34,6 +43,6 @@ export const signUpAction = async (formData: FormData) => {
   return encodedRedirect(
     'success',
     '/sign-up',
-    'Thanks for signing up! Please check your email for a verification link.',
+    '계정 생성 이메일이 전송되었습니다. 이메일을 확인해주세요',
   );
 };

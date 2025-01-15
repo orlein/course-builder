@@ -12,7 +12,11 @@ export const forgotPasswordAction = async (formData: FormData) => {
   const callbackUrl = formData.get('callbackUrl')?.toString();
 
   if (!email) {
-    return encodedRedirect('error', '/forgot-password', 'Email is required');
+    return encodedRedirect(
+      'error',
+      '/forgot-password',
+      '이메일을 입력해주세요.',
+    );
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -24,7 +28,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect(
       'error',
       '/forgot-password',
-      'Could not reset password',
+      '비밀번호를 재설정할 수 없습니다.',
     );
   }
 
@@ -35,6 +39,6 @@ export const forgotPasswordAction = async (formData: FormData) => {
   return encodedRedirect(
     'success',
     '/forgot-password',
-    'Check your email for a link to reset your password.',
+    '비밀번호 재설정 이메일이 전송되었습니다. 이메일을 확인해주세요.',
   );
 };

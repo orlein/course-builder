@@ -22,16 +22,13 @@ export default async function LoginPage(props: {
     <div className={cn('flex flex-col gap-6 w-full')}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
+          <CardTitle className="text-2xl">로그인</CardTitle>
         </CardHeader>
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">이메일</Label>
                 <Input
                   id="email"
                   name="email"
@@ -42,27 +39,25 @@ export default async function LoginPage(props: {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">비밀번호</Label>
                   <a
                     href="/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                    tabIndex={-1}
                   >
-                    Forgot your password?
+                    비밀번호를 잊으셨나요?
                   </a>
                 </div>
                 <Input id="password" name="password" type="password" required />
               </div>
               <SubmitButton className="w-full" formAction={loginAction}>
-                Login
+                로그인
               </SubmitButton>
-              {/* <Button variant="outline" className="w-full">
-            Login with Google
-          </Button> */}
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{' '}
-              <Link href="/signup" className="underline underline-offset-4">
-                Sign up
+              계정이 없으신가요?
+              <Link href="/sign-up" className="underline underline-offset-4">
+                회원가입
               </Link>
             </div>
           </form>

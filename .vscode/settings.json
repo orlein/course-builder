@@ -4,4 +4,7 @@
       "file": "code-style.md" // import instructions from file `code-style.md`
     }
   ],
+  "cSpell.words": [
+    "supabase"
+  ],
 }

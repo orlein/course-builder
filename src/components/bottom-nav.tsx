@@ -9,11 +9,6 @@ import React from 'react';
 
 export default function BottomNav() {
   const segments = useSelectedLayoutSegments();
-  const isActive = React.useMemo(() => {
-    return NAV_ITEMS.some(
-      (item) => item.href === '/' + segments.slice(0).join('/'),
-    );
-  }, []);
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t max-w-screen-md mx-auto shadow-2xl border">
@@ -26,7 +21,7 @@ export default function BottomNav() {
               'flex flex-col items-center justify-center w-full h-full text-muted-foreground hover:text-primary',
               'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring focus-visible:ring-offset-background',
               {
-                'text-primary': isActive,
+                'text-primary': item.href === '/' + segments.slice(0).join('/'),
               },
             )}
           >
