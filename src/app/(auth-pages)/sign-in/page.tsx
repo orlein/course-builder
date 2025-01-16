@@ -11,9 +11,9 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Label } from '@radix-ui/react-label';
 import Link from 'next/link';
-import { loginAction } from './action';
+import { signInAction } from './action';
 
-export default async function LoginPage(props: {
+export default async function SignInPage(props: {
   searchParams: Promise<Message>;
 }) {
   const searchParams = await props.searchParams;
@@ -50,7 +50,7 @@ export default async function LoginPage(props: {
                 </div>
                 <Input id="password" name="password" type="password" required />
               </div>
-              <SubmitButton className="w-full" formAction={loginAction}>
+              <SubmitButton className="w-full" formAction={signInAction}>
                 로그인
               </SubmitButton>
             </div>

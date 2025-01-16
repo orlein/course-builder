@@ -81,7 +81,7 @@ export default async function SignUpPage(props: {
               </div>
               <div className="mt-4 text-center text-sm">
                 계정이 있으신가요?{' '}
-                <Link href="/login" className="underline underline-offset-4">
+                <Link href="/sign-in" className="underline underline-offset-4">
                   로그인
                 </Link>
               </div>

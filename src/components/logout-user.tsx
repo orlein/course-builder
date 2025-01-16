@@ -38,7 +38,7 @@ export default function LogoutUser() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
           <Button className="w-full" asChild>
-            <Link href="/login">
+            <Link href="/sign-in">
               <LogInIcon className="w-4 h-4 mr-2" />
               Log In
             </Link>

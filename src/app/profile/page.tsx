@@ -23,7 +23,7 @@ export default async function ProfilePage(props: {
           <p className="mt-2">로그인이 필요합니다.</p>
           <div>
             <Button variant={'outline'} asChild>
-              <Link href="/login">로그인</Link>
+              <Link href="/sign-in">로그인</Link>
             </Button>
           </div>
         </div>
