@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { NAV_ITEMS } from '@/lib/nav-items';
-import { ArrowLeftIcon } from 'lucide-react';
+import { ArrowLeftIcon, SettingsIcon, StarIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter, useSelectedLayoutSegments } from 'next/navigation';
 
 export default function Header() {
@@ -33,7 +34,16 @@ export default function Header() {
             <div className="w-6 h-6" />
           </Button>
         )}
-        <h1 className="text-lg font-semibold">코스빌더</h1>
+        <Link href={'/'} className="flex flex-1 justify-center">
+          <h1 className="text-lg font-semibold">코스빌더</h1>
+        </Link>
+        <div className="flex flex-row">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href={'/settings'}>
+              <SettingsIcon className="h-6 w-6" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </header>
   );

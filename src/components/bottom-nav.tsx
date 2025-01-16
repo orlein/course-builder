@@ -2,10 +2,15 @@
 
 import { NAV_ITEMS } from '@/lib/nav-items';
 import { cn } from '@/lib/utils';
-import { HomeIcon, MapPinIcon, SearchIcon, UserIcon } from 'lucide-react';
+import {
+  MapPinIcon,
+  SearchIcon,
+  StarIcon,
+  UserIcon,
+  WaypointsIcon,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
-import React from 'react';
 
 export default function BottomNav() {
   const segments = useSelectedLayoutSegments();
@@ -25,10 +30,11 @@ export default function BottomNav() {
               },
             )}
           >
-            {item.iconName === 'home' && <HomeIcon />}
+            {item.iconName === 'favorite' && <StarIcon />}
             {item.iconName === 'map' && <MapPinIcon />}
+            {item.iconName === 'course' && <WaypointsIcon />}
             {item.iconName === 'pin' && <SearchIcon />}
-            {item.iconName === 'user' && <UserIcon />}
+            {item.iconName === 'profile' && <UserIcon />}
             <span className="text-xs mt-1">{item.label}</span>
           </Link>
         ))}
