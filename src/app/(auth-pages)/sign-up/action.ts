@@ -7,7 +7,7 @@ import { headers } from 'next/headers';
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();
-  const passwordConfirm = formData.get('password-confirm')?.toString();
+  const passwordConfirm = formData.get('confirm-password')?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get('origin');
 
