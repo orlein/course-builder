@@ -19,7 +19,7 @@ export default async function ProfilePage(props: {
     return (
       <>
         <div>
-          <h1 className="text-2xl font-bold">개인정보 및 설정</h1>
+          <h1 className="text-2xl font-bold">개인정보</h1>
           <p className="mt-2">로그인이 필요합니다.</p>
           <div>
             <Button variant={'outline'} asChild>
@@ -34,7 +34,7 @@ export default async function ProfilePage(props: {
   return (
     <>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold">개인정보 및 설정</h1>
+        <h1 className="text-2xl font-bold">개인정보</h1>
         <p className="mt-2">{user.email}님, 환영합니다.</p>
         <Image
           src="/profile-pic.jpg"
