@@ -13,7 +13,7 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect(
       'error',
       '/protected/reset-password',
-      'Password and confirm password are required',
+      '비밀번호를 입력해주세요.',
     );
   }
 
@@ -21,7 +21,7 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect(
       'error',
       '/protected/reset-password',
-      'Passwords do not match',
+      '비밀번호가 일치하지 않습니다.',
     );
   }
 
@@ -33,9 +33,13 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect(
       'error',
       '/protected/reset-password',
-      'Password update failed',
+      '비밀번호를 업데이트할 수 없습니다.',
     );
   }
 
-  encodedRedirect('success', '/protected/reset-password', 'Password updated');
+  encodedRedirect(
+    'success',
+    '/protected/reset-password',
+    '비밀번호가 재설정되었습니다.',
+  );
 };

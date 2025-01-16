@@ -15,7 +15,7 @@ export function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost">
-          <span className="sr-only">Toggle theme</span>
+          <span className="sr-only">다크모드/라이트모드를 변경합니다</span>
           테마 변경
         </Button>
       </DropdownMenuTrigger>

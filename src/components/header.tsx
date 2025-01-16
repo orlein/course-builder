@@ -26,7 +26,7 @@ export default function Header() {
             }}
           >
             <ArrowLeftIcon className="h-6 w-6" />
-            <span className="sr-only">Back</span>
+            <span className="sr-only">뒤로가기</span>
           </Button>
         ) : (
           <Button size="icon" variant={'ghost'} className="mr-2" disabled>
