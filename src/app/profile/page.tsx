@@ -1,25 +1,20 @@
-import { Message } from '@/components/form-message';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
-import { signOutAction } from '../(auth-pages)/sign-out/action';
 import Link from 'next/link';
+import { signOutAction } from '../(auth-pages)/sign-out/action';
 
-export default async function ProfilePage(props: {
-  searchParams: Promise<Message>;
-}) {
+export default async function ProfilePage() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const searchParams = await props.searchParams;
 
   if (!user) {
     return (
       <>
         <div>
-          <h1 className="text-2xl font-bold">개인정보</h1>
+          <h1 className="text-2xl font-bold">프로필</h1>
           <p className="mt-2">로그인이 필요합니다.</p>
           <div>
             <Button variant={'outline'} asChild>
@@ -34,7 +29,7 @@ export default async function ProfilePage(props: {
   return (
     <>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold">개인정보</h1>
+        <h1 className="text-2xl font-bold">프로필</h1>
         <p className="mt-2">{user.email}님, 환영합니다.</p>
         <Image
           src="/profile-pic.jpg"

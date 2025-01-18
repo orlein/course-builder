@@ -7,10 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { StarIcon, MapPinIcon, SearchIcon } from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 import Link from 'next/link';
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <div className="container p-6 space-y-6">
       <h1 className="text-3xl font-bold">코스빌더에 오신것을 환영합니다.</h1>

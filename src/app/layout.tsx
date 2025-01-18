@@ -21,7 +21,7 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="ko" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
