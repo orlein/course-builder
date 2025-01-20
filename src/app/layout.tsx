@@ -1,5 +1,6 @@
 import BottomNav from '@/components/bottom-nav';
 import Header from '@/components/header';
+import { Toaster } from '@/components/ui/toaster';
 import { Metadata } from 'next';
 import { ThemeProvider } from 'next-themes';
 import { Geist } from 'next/font/google';
@@ -39,6 +40,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
             <BottomNav />
           </div>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
