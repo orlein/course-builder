@@ -24,6 +24,9 @@ type MinifiedGeolocationPositionError = {
 
 type NaverMapContextProps = {
   mapRef: React.RefObject<naver.maps.Map | null>;
+  isInitialized: boolean;
+  setInitialized: React.Dispatch<React.SetStateAction<boolean>>;
+  onClickCallbackRef: React.RefObject<((e: NaverMapClickEvent) => void) | null>;
   mapId: string;
   clickedCoord?: naver.maps.LatLng | null;
   setClickedCoord?: React.Dispatch<
@@ -91,6 +94,9 @@ const NaverMap = React.forwardRef<
   ref,
 ) {
   const mapRef = React.useRef<naver.maps.Map>(null);
+  const onClickCallbackRef =
+    React.useRef<(e: NaverMapClickEvent) => void>(null);
+  const [isInitialized, setInitialized] = React.useState(false);
   const [clickedCoord, setClickedCoord] =
     React.useState<naver.maps.LatLng | null>(null);
   const [geolocationPermissionError, setGeolocationPermissionError] =
@@ -98,13 +104,21 @@ const NaverMap = React.forwardRef<
 
   const initializeMap = React.useCallback(() => {
     const map = new window.naver.maps.Map(mapId, mapOptions);
+    map.addListener('click', (e) => {
+      onClickCallbackRef.current?.({ coord: e.coord, type: 'click' });
+      setClickedCoord?.(e.coord);
+    });
     mapRef.current = map;
+    setInitialized(true);
   }, []);
 
   return (
     <NaverMapContext.Provider
       value={{
         mapRef,
+        isInitialized,
+        setInitialized,
+        onClickCallbackRef,
         mapId,
         clickedCoord,
         setClickedCoord,
@@ -128,17 +142,22 @@ const NaverMapContent = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement> & {
     onClickMap?: (e: NaverMapClickEvent) => void;
   }
->(({ className, ...props }, ref) => {
-  const { mapRef, setClickedCoord } = useNaverMap();
-
+>(({ className, onClickMap, ...props }, ref) => {
+  const { isInitialized, onClickCallbackRef } = useNaverMap();
   React.useEffect(() => {
-    mapRef.current?.addListener('click', (e) => {
-      props?.onClickMap?.({ coord: e.coord, type: 'click' });
-      setClickedCoord?.(e.coord);
-    });
-  }, []);
+    if (onClickMap) {
+      onClickCallbackRef.current = onClickMap;
+    }
+  }, [isInitialized]);
 
-  return <div id={mapId} style={{ width: '100%', height: 400 }} ref={ref} />;
+  return (
+    <div
+      id={mapId}
+      style={{ width: '100%', height: 400 }}
+      {...props}
+      ref={ref}
+    />
+  );
 });
 
 const NaverMapInitializer = React.forwardRef<
@@ -207,6 +226,7 @@ const NaverMapAuthorizer = React.forwardRef<
           'text-destructive-foreground border-l-2 border-destructive-foreground px-4',
           className,
         )}
+        {...props}
         ref={ref}
       >
         에러: 현재 위치를 가져올 수 없습니다. 다시 시도해주세요.
@@ -221,6 +241,7 @@ const NaverMapAuthorizer = React.forwardRef<
           'text-destructive-foreground border-l-2 border-destructive-foreground px-4',
           className,
         )}
+        {...props}
         ref={ref}
       >
         에러: 위치를 가져오는데 시간이 너무 오래 걸립니다. 다시 시도해주세요.
@@ -239,7 +260,7 @@ const NaverCoordinateDisplay = React.forwardRef<
   const { clickedCoord } = useNaverMap();
 
   return (
-    <div {...props} className={cn('text-sm', className)} ref={ref}>
+    <div className={cn('text-sm', className)} {...props} ref={ref}>
       <pre>{JSON.stringify(clickedCoord, null, 2)}</pre>
     </div>
   );
