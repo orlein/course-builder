@@ -112,6 +112,13 @@ const NaverMap = React.forwardRef<
     setInitialized(true);
   }, []);
 
+  //맵이 unmount되었을 때 맵 인스턴스 destory하기
+  React.useEffect(() => {
+    return () => {
+      mapRef.current?.destroy();
+    };
+  }, []);
+
   return (
     <NaverMapContext.Provider
       value={{
@@ -153,7 +160,7 @@ const NaverMapContent = React.forwardRef<
   return (
     <div
       id={mapId}
-      style={{ width: '100%', height: 400 }}
+      className={cn('w-full h-96', className)}
       {...props}
       ref={ref}
     />
