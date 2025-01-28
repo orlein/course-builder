@@ -5,14 +5,14 @@ import React from 'react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 
-const mapId = 'naver-map';
-
 type NaverMapClickEvent = {
   coord: naver.maps.LatLng;
   type: 'click';
 };
+
 type NaverMapProps = {
   mapOptions?: naver.maps.MapOptions;
+  mapId: string;
   // onClickMap?: (e: NaverMapClickEvent) => void;
 };
 
@@ -52,28 +52,24 @@ function useNaverMap() {
 
 export const searchCoordinateToAddress = (
   coords: naver.maps.LatLng,
-  map: naver.maps.Map,
-  resCallback: (res: NaverReverseGeocodeRes) => void,
-) => {
-  naver.maps.Service.reverseGeocode(
-    // options
-    {
-      coords: coords,
-      orders: [
-        naver.maps.Service.OrderType.ADDR,
-        naver.maps.Service.OrderType.ROAD_ADDR,
-      ].join(','),
-    },
-    // callback
-    function (status: naver.maps.Service.Status, res: NaverReverseGeocodeRes) {
-      // 응답을 못 받으면 'Something went wrong' alert 띄우기
-      if (status !== naver.maps.Service.Status.OK) {
-        return alert('Something went wrong!');
-      }
-
-      resCallback(res);
-    },
-  );
+): Promise<NaverReverseGeocodeRes> => {
+  return new Promise((resolve, reject) => {
+    naver.maps.Service.reverseGeocode(
+      {
+        coords: coords,
+        orders: [
+          naver.maps.Service.OrderType.ADDR,
+          naver.maps.Service.OrderType.ROAD_ADDR,
+        ].join(','),
+      },
+      (status: naver.maps.Service.Status, res: NaverReverseGeocodeRes) => {
+        if (status !== naver.maps.Service.Status.OK) {
+          reject(new Error('Something went wrong!'));
+        }
+        resolve(res);
+      },
+    );
+  });
 };
 
 const NaverMap = React.forwardRef<
@@ -82,6 +78,7 @@ const NaverMap = React.forwardRef<
 >(function WrappedNaverMap(
   {
     children,
+    mapId,
     mapOptions = {
       zoom: 15,
       scaleControl: true,
@@ -110,13 +107,6 @@ const NaverMap = React.forwardRef<
     });
     mapRef.current = map;
     setInitialized(true);
-  }, []);
-
-  //맵이 unmount되었을 때 맵 인스턴스 destory하기
-  React.useEffect(() => {
-    return () => {
-      mapRef.current?.destroy();
-    };
   }, []);
 
   return (
@@ -150,7 +140,7 @@ const NaverMapContent = React.forwardRef<
     onClickMap?: (e: NaverMapClickEvent) => void;
   }
 >(({ className, onClickMap, ...props }, ref) => {
-  const { isInitialized, onClickCallbackRef } = useNaverMap();
+  const { isInitialized, onClickCallbackRef, mapId } = useNaverMap();
   React.useEffect(() => {
     if (onClickMap) {
       onClickCallbackRef.current = onClickMap;
@@ -273,10 +263,45 @@ const NaverCoordinateDisplay = React.forwardRef<
   );
 });
 
+const SuspendedNaverMapAddress = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    resPromise: Promise<NaverReverseGeocodeRes>;
+  }
+>(({ className, resPromise, ...props }, ref) => {
+  const res = React.use(resPromise);
+
+  return (
+    <div className={cn('text-sm', className)} {...props} ref={ref}>
+      <pre>{JSON.stringify(res, null, 2)}</pre>
+    </div>
+  );
+});
+
+const NaverMapAddress = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const { clickedCoord } = useNaverMap();
+
+  if (!clickedCoord) {
+    return null;
+  }
+
+  const resPromise = searchCoordinateToAddress(clickedCoord);
+
+  return (
+    <React.Suspense>
+      <SuspendedNaverMapAddress resPromise={resPromise} {...props} ref={ref} />
+    </React.Suspense>
+  );
+});
+
 export {
   NaverMap,
   NaverMapInitializer,
   NaverMapAuthorizer,
   NaverMapContent,
   NaverCoordinateDisplay,
+  NaverMapAddress,
 };
