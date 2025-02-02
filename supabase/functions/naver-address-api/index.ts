@@ -9,9 +9,26 @@ import { Hono } from 'jsr:@hono/hono';
 const functionName = 'naver-address-api';
 const app = new Hono().basePath(`/${functionName}`);
 
-app.get('/', () => {
+const fetchToNaver = async (query: string) => {
+  const url = new URL('https://openapi.naver.com/v1/search/local');
+  url.searchParams.set('query', query);
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Naver-Client-Id': Deno.env.get('NAVER_DEVELOPERS_CLIENT_ID')!,
+      'X-Naver-Client-Secret': Deno.env.get('NAVER_DEVELOPERS_CLIENT_SECRET')!,
+    },
+  });
+
+  return await response.text();
+};
+
+app.get('/', async (c) => {
   try {
-    return new Response('Hello, World!', { status: 200 });
+    const { query } = c.req.query();
+    const data = await fetchToNaver(query);
+    return new Response(data);
   } catch (error) {
     return new Response(JSON.stringify(error), { status: 500 });
   }
