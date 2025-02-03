@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@hono/hono':
-        specifier: npm:@jsr/hono__hono@^4.6.20
-        version: '@jsr/hono__hono@4.6.20'
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.54.2(react@19.0.0))
@@ -699,9 +696,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
-
-  '@jsr/hono__hono@4.6.20':
-    resolution: {integrity: sha512-8y8MD+QXLvPkbjTgsjuQRVtSDUk1DlGTmerVOmzoJZfvSx3pBEUx70ZdYk41Z+XatbMoK1IxkanFruFvKrdVrg==, tarball: https://npm.jsr.io/~/11/@jsr/hono__hono/4.6.20.tgz}
 
   '@next/env@15.1.4':
     resolution: {integrity: sha512-2fZ5YZjedi5AGaeoaC0B20zGntEHRhi2SdWcu61i48BllODcAmmtj8n7YarSPt4DaTsJaBFdxQAVEVzgmx2Zpw==}
@@ -3134,8 +3128,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
-
-  '@jsr/hono__hono@4.6.20': {}
 
   '@next/env@15.1.4': {}
 
