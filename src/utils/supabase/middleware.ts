@@ -1,4 +1,4 @@
-import { type CookieMethodsServer, createServerClient } from '@supabase/ssr';
+import { CookieOptions, createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export const updateSession = async (request: NextRequest) => {
@@ -12,7 +12,6 @@ export const updateSession = async (request: NextRequest) => {
       },
     });
 
-    // it displays deprecated warning, but the 'cookies' type is correctly satisfies the latest version of the type definition.
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -21,7 +20,13 @@ export const updateSession = async (request: NextRequest) => {
           getAll: () => {
             return request.cookies.getAll();
           },
-          setAll(cookiesToSet) {
+          setAll(
+            cookiesToSet: {
+              name: string;
+              value: string;
+              options: CookieOptions;
+            }[],
+          ) {
             cookiesToSet.forEach(({ name, value }) =>
               request.cookies.set(name, value),
             );
@@ -32,7 +37,7 @@ export const updateSession = async (request: NextRequest) => {
               response.cookies.set(name, value, options),
             );
           },
-        } satisfies CookieMethodsServer,
+        },
       },
     );
 
