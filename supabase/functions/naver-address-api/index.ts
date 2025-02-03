@@ -31,9 +31,9 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://course-builder-liard.vercel.app/',
-      'https://course-builder-orcin-sigma.vercel.app/',
-      'https://oz-adv-course-builder.vercel.app/',
+      'https://course-builder-liard.vercel.app',
+      'https://course-builder-orcin-sigma.vercel.app',
+      'https://oz-adv-course-builder.vercel.app',
     ],
     allowMethods: ['GET', 'OPTIONS'],
   }),
