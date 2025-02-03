@@ -6,6 +6,7 @@ import {
   NaverMapAuthorizer,
   NaverMapContent,
   NaverMapInitializer,
+  NaverSearchPlace,
 } from '@/components/naver-map';
 import React from 'react';
 
@@ -17,6 +18,7 @@ export function NaverMapWrapper() {
       <NaverMapAuthorizer>위치 권한 요청</NaverMapAuthorizer>
       <NaverCoordinateDisplay />
       <NaverMapAddress />
+      <NaverSearchPlace />
     </NaverMap>
   );
 }

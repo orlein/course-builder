@@ -72,6 +72,61 @@ export const searchCoordinateToAddress = (
   });
 };
 
+export const searchNaverPlaceFromAddress = async (
+  coords: naver.maps.LatLng,
+) => {
+  const address = await searchCoordinateToAddress(coords);
+  /**
+   * "status": {
+   *   "code": 3,
+   *   "name": "no results",
+   *   "message": "요청한 데이타의 결과가 없습니다."
+   * },
+   */
+  if (
+    address.v2.status.code ===
+    naver.maps.Service.ReverseGeocodeStatusCode.CODE_3
+  ) {
+    return null;
+  }
+
+  const isJibunAddressValid = address.v2.address.jibunAddress.length > 0;
+  const isRoadAddressValid = address.v2.address.roadAddress.length > 0;
+
+  if (!isJibunAddressValid && !isRoadAddressValid) {
+    return null;
+  }
+
+  const url = new URL(
+    'https://mkuxhpkgdtxmytgksvue.supabase.co/functions/v1/naver-address-api',
+  );
+  const params = new URLSearchParams({
+    query: encodeURIComponent(
+      isRoadAddressValid
+        ? address.v2.address.roadAddress
+        : address.v2.address.jibunAddress,
+    ),
+  });
+
+  const fullUrl = url.toString() + '?' + params.toString();
+
+  const res = await fetch(fullUrl, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+    },
+  });
+
+  const json = await res.json();
+  return {
+    requested: {
+      url: fullUrl,
+      query: decodeURIComponent(params.get('query')!),
+    },
+    ...json,
+  };
+};
+
 const NaverMap = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & NaverMapProps
@@ -291,8 +346,42 @@ const NaverMapAddress = React.forwardRef<
   const resPromise = searchCoordinateToAddress(clickedCoord);
 
   return (
-    <React.Suspense>
+    <React.Suspense fallback={<div>로딩중...</div>}>
       <SuspendedNaverMapAddress resPromise={resPromise} {...props} ref={ref} />
+    </React.Suspense>
+  );
+});
+
+const SuspendedNaverSearchPlace = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    resPromise: Promise<NaverReverseGeocodeRes>;
+  }
+>(({ className, resPromise, ...props }, ref) => {
+  const res = React.use(resPromise);
+
+  return (
+    <div className={cn('text-sm', className)} {...props} ref={ref}>
+      <pre>{JSON.stringify(res, null, 2)}</pre>
+    </div>
+  );
+});
+
+const NaverSearchPlace = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {}
+>(({ className, ...props }, ref) => {
+  const { clickedCoord } = useNaverMap();
+
+  if (!clickedCoord) {
+    return null;
+  }
+
+  const resPromise = searchNaverPlaceFromAddress(clickedCoord);
+
+  return (
+    <React.Suspense fallback={<div>로딩중...</div>}>
+      <SuspendedNaverSearchPlace {...props} resPromise={resPromise} ref={ref} />
     </React.Suspense>
   );
 });
@@ -304,4 +393,5 @@ export {
   NaverMapContent,
   NaverCoordinateDisplay,
   NaverMapAddress,
+  NaverSearchPlace,
 };
