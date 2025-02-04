@@ -386,8 +386,43 @@ const NaverSearchPlace = React.forwardRef<
   );
 });
 
+const NaverZoomControl = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {}
+>(({ className, ...props }, ref) => {
+  const { mapRef } = useNaverMap();
+
+  React.useEffect(() => {
+    if (!mapRef.current) {
+      return;
+    }
+  }, [mapRef.current]);
+
+  return (
+    <div>
+      <Button
+        onClick={() => {
+          mapRef.current?.zoomBy(1);
+        }}
+        variant={'outline'}
+      >
+        +
+      </Button>
+      <Button
+        onClick={() => {
+          mapRef.current?.zoomBy(-1);
+        }}
+        variant={'outline'}
+      >
+        -
+      </Button>
+    </div>
+  );
+});
+
 export {
   NaverMap,
+  NaverZoomControl,
   NaverMapInitializer,
   NaverMapAuthorizer,
   NaverMapContent,
