@@ -392,12 +392,6 @@ const NaverZoomControl = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { mapRef } = useNaverMap();
 
-  React.useEffect(() => {
-    if (!mapRef.current) {
-      return;
-    }
-  }, [mapRef.current]);
-
   return (
     <div>
       <Button
