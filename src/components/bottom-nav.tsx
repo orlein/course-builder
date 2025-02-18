@@ -4,6 +4,7 @@ import { NAV_ITEMS } from '@/lib/nav-items';
 import { cn } from '@/lib/utils';
 import {
   MapPinIcon,
+  MemoryStickIcon,
   SearchIcon,
   StarIcon,
   UserIcon,
@@ -33,6 +34,7 @@ export default function BottomNav() {
             {item.iconName === 'favorite' && <StarIcon />}
             {item.iconName === 'map' && <MapPinIcon />}
             {item.iconName === 'course' && <WaypointsIcon />}
+            {item.iconName === 'memo' && <MemoryStickIcon />}
             {item.iconName === 'pin' && <SearchIcon />}
             {item.iconName === 'profile' && <UserIcon />}
             <span className="text-xs mt-1">{item.label}</span>

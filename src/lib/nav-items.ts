@@ -3,5 +3,6 @@ export const NAV_ITEMS = [
   { iconName: 'map', label: '지도', href: '/map' },
   { iconName: 'course', label: '코스', href: '/courses' },
   { iconName: 'favorite', label: '즐겨찾기', href: '/favorites' },
+  { iconName: 'memo', label: '메모', href: '/memo' },
   { iconName: 'profile', label: '프로필', href: '/profile' },
 ];
