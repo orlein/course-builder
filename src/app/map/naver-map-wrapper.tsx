@@ -12,9 +12,20 @@ import {
 import React from 'react';
 
 export function NaverMapWrapper() {
+  const markerRef = React.useRef<null | naver.maps.Marker>(null);
+
   return (
     <NaverMap mapId="naver-map-1">
-      <NaverMapContent />
+      <NaverMapContent
+        onClickMap={(event, map) => {
+          markerRef.current?.setMap(null);
+          const marker = new naver.maps.Marker({
+            position: event.coord,
+            map: map,
+          });
+          markerRef.current = marker;
+        }}
+      />
       <NaverZoomControl />
       <NaverMapInitializer>현재 위치로 이동</NaverMapInitializer>
       <NaverMapAuthorizer>위치 권한 요청</NaverMapAuthorizer>

@@ -26,7 +26,9 @@ type NaverMapContextProps = {
   mapRef: React.RefObject<naver.maps.Map | null>;
   isInitialized: boolean;
   setInitialized: React.Dispatch<React.SetStateAction<boolean>>;
-  onClickCallbackRef: React.RefObject<((e: NaverMapClickEvent) => void) | null>;
+  onClickCallbackRef: React.RefObject<
+    ((e: NaverMapClickEvent, map: naver.maps.Map) => void) | null
+  >;
   mapId: string;
   clickedCoord?: naver.maps.LatLng | null;
   setClickedCoord?: React.Dispatch<
@@ -147,7 +149,7 @@ const NaverMap = React.forwardRef<
 ) {
   const mapRef = React.useRef<naver.maps.Map>(null);
   const onClickCallbackRef =
-    React.useRef<(e: NaverMapClickEvent) => void>(null);
+    React.useRef<(e: NaverMapClickEvent, map: naver.maps.Map) => void>(null);
   const [isInitialized, setInitialized] = React.useState(false);
   const [clickedCoord, setClickedCoord] =
     React.useState<naver.maps.LatLng | null>(null);
@@ -157,7 +159,7 @@ const NaverMap = React.forwardRef<
   const initializeMap = React.useCallback(() => {
     const map = new window.naver.maps.Map(mapId, mapOptions);
     map.addListener('click', (e) => {
-      onClickCallbackRef.current?.({ coord: e.coord, type: 'click' });
+      onClickCallbackRef.current?.({ coord: e.coord, type: 'click' }, map);
       setClickedCoord?.(e.coord);
     });
     mapRef.current = map;
@@ -192,7 +194,7 @@ const NaverMap = React.forwardRef<
 const NaverMapContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-    onClickMap?: (e: NaverMapClickEvent) => void;
+    onClickMap?: (e: NaverMapClickEvent, map: naver.maps.Map) => void;
   }
 >(({ className, onClickMap, ...props }, ref) => {
   const { isInitialized, onClickCallbackRef, mapId } = useNaverMap();
