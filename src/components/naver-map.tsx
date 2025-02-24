@@ -4,6 +4,7 @@ import Script from 'next/script';
 import React from 'react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot';
 
 type NaverMapClickEvent = {
   coord: naver.maps.LatLng;
@@ -42,7 +43,7 @@ type NaverMapContextProps = {
 
 const NaverMapContext = React.createContext<NaverMapContextProps | null>(null);
 
-function useNaverMap() {
+export function useNaverMap() {
   const mapContext = React.useContext(NaverMapContext);
 
   if (!mapContext) {
@@ -195,8 +196,9 @@ const NaverMapContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     onClickMap?: (e: NaverMapClickEvent, map: naver.maps.Map) => void;
+    asChild?: boolean;
   }
->(({ className, onClickMap, ...props }, ref) => {
+>(({ className, onClickMap, asChild = false, ...props }, ref) => {
   const { isInitialized, onClickCallbackRef, mapId } = useNaverMap();
   React.useEffect(() => {
     if (onClickMap) {
@@ -204,8 +206,10 @@ const NaverMapContent = React.forwardRef<
     }
   }, [isInitialized]);
 
+  const Comp = asChild ? Slot : 'div';
+
   return (
-    <div
+    <Comp
       id={mapId}
       className={cn('w-full h-96', className)}
       {...props}
