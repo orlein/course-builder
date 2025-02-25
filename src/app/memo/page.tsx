@@ -1,7 +1,13 @@
 import { createClient } from '@/utils/supabase/server';
 import { AddMemoForm } from './add-memo-form';
+import { deleteMemoAction } from './delete-memo';
+import { SubmitButton } from '@/components/submit-button';
+import { FormMessage, Message } from '@/components/form-message';
 
-export default async function MemoPage() {
+export default async function MemoPage(props: {
+  searchParams: Promise<Message>;
+}) {
+  const searchParams = await props.searchParams;
   const supabase = await createClient();
 
   const {
@@ -32,16 +38,19 @@ export default async function MemoPage() {
     <div>
       <h1>Memo Page</h1>
       <AddMemoForm />
+      <FormMessage message={searchParams} />
 
       <div className="space-y-4">
         {memoList.data?.map((memo) => (
-          <div key={memo.id}>
+          <form key={memo.id} action={deleteMemoAction}>
             <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
               제목: {memo.title}
             </h2>
             <p>{memo.content}</p>
+            <input type="hidden" name="memoId" value={memo.id} />
+            <SubmitButton>삭제하기</SubmitButton>
             <hr />
-          </div>
+          </form>
         ))}
       </div>
     </div>

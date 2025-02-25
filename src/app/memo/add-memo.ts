@@ -16,6 +16,14 @@ export const addMemoAction = async (formData: FormData) => {
     return encodedRedirect('error', '/memo', '로그인이 필요합니다.');
   }
 
+  if (title.length === 0 || content.length === 0) {
+    return encodedRedirect(
+      'error',
+      '/memo',
+      '제목과 내용을 모두 입력해주세요.',
+    );
+  }
+
   const { error } = await supabase.from('memo').insert({
     title,
     content,
