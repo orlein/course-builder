@@ -5,6 +5,7 @@ import React from 'react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { Slot } from '@radix-ui/react-slot';
+import { Pin } from '@/db/schema';
 
 type NaverMapClickEvent = {
   coord: naver.maps.LatLng;
@@ -195,28 +196,49 @@ const NaverMap = React.forwardRef<
 const NaverMapContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
+    defaultPins?: Pin[];
     onClickMap?: (e: NaverMapClickEvent, map: naver.maps.Map) => void;
     asChild?: boolean;
   }
->(({ className, onClickMap, asChild = false, ...props }, ref) => {
-  const { isInitialized, onClickCallbackRef, mapId } = useNaverMap();
-  React.useEffect(() => {
-    if (onClickMap) {
-      onClickCallbackRef.current = onClickMap;
-    }
-  }, [isInitialized]);
+>(
+  (
+    { className, onClickMap, asChild = false, defaultPins = [], ...props },
+    ref,
+  ) => {
+    const { isInitialized, onClickCallbackRef, mapId, mapRef } = useNaverMap();
 
-  const Comp = asChild ? Slot : 'div';
+    React.useEffect(() => {
+      if (isInitialized) {
+        const pins = defaultPins
+          .filter((pin) => pin.latitude && pin.longitude)
+          .map((pin) => {
+            return new naver.maps.Marker({
+              position: new naver.maps.LatLng([
+                parseFloat(pin.longitude!),
+                parseFloat(pin.latitude!),
+              ]),
+              map: mapRef.current!,
+            });
+          });
+      }
 
-  return (
-    <Comp
-      id={mapId}
-      className={cn('w-full h-96', className)}
-      {...props}
-      ref={ref}
-    />
-  );
-});
+      if (onClickMap) {
+        onClickCallbackRef.current = onClickMap;
+      }
+    }, [isInitialized, defaultPins]);
+
+    const Comp = asChild ? Slot : 'div';
+
+    return (
+      <Comp
+        id={mapId}
+        className={cn('w-full h-96', className)}
+        {...props}
+        ref={ref}
+      />
+    );
+  },
+);
 
 const NaverMapInitializer = React.forwardRef<
   HTMLButtonElement,

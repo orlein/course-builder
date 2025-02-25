@@ -1,31 +1,33 @@
 'use client';
 import {
-  NaverCoordinateDisplay,
   NaverMap,
-  NaverMapAddress,
   NaverMapAuthorizer,
   NaverMapContent,
   NaverMapInitializer,
-  NaverSearchPlace,
   NaverZoomControl,
 } from '@/components/naver-map';
+import { Pin } from '@/db/schema';
 import React from 'react';
 import { AddPinButton } from './add-pin-form';
-import { FormMessage } from '@/components/form-message';
 
-export function NaverMapWrapper() {
+export function NaverMapWrapper(
+  props: React.PropsWithChildren<{
+    pins: Pin[];
+  }>,
+) {
   const markerRef = React.useRef<null | naver.maps.Marker>(null);
-  const contextRef = React.useRef<null | HTMLDivElement>(null);
 
   return (
     <NaverMap mapId="naver-map-1">
       <NaverMapContent
+        defaultPins={props.pins}
         onClickMap={(event, map) => {
-          contextRef.current?.click();
           markerRef.current?.setMap(null);
           const marker = new naver.maps.Marker({
             position: event.coord,
             map: map,
+            animation: naver.maps.Animation.BOUNCE,
+            title: '클릭한 위치',
           });
           marker.addListener('click', (e) => {
             console.log('marker clicked', e);

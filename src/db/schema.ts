@@ -103,3 +103,5 @@ export const pins = pgTable(
     }),
   ],
 );
+
+export type Pin = typeof pins.$inferInsert;
