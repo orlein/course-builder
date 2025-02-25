@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
+import { AddMemoForm } from './add-memo-form';
 
 export default async function MemoPage() {
   const supabase = await createClient();
@@ -30,16 +31,19 @@ export default async function MemoPage() {
   return (
     <div>
       <h1>Memo Page</h1>
-      <p>Memo page content</p>
-      <pre>
-        <code>{JSON.stringify(memoList, null, 2)}</code>
-      </pre>
-      {memoList.data?.map((memo) => (
-        <div key={memo.id}>
-          <h2>{memo.title}</h2>
-          <p>{memo.content}</p>
-        </div>
-      ))}
+      <AddMemoForm />
+
+      <div className="space-y-4">
+        {memoList.data?.map((memo) => (
+          <div key={memo.id}>
+            <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+              제목: {memo.title}
+            </h2>
+            <p>{memo.content}</p>
+            <hr />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
