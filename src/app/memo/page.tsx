@@ -40,7 +40,7 @@ export default async function MemoPage(props: {
       <AddMemoForm />
       <FormMessage message={searchParams} />
 
-      <div className="space-y-4">
+      <div className="flex flex-col-reverse space-y-4">
         {memoList.data?.map((memo) => (
           <form key={memo.id} action={deleteMemoAction}>
             <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">

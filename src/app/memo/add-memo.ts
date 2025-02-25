@@ -4,7 +4,14 @@ import { createClient } from '@/utils/supabase/server';
 import { encodedRedirect } from '@/utils/utils';
 import { revalidatePath } from 'next/cache';
 
-export const addMemoAction = async (formData: FormData) => {
+type FormState = {
+  success: boolean;
+};
+
+export const addMemoAction = async (
+  prevState: FormState,
+  formData: FormData,
+): Promise<FormState> => {
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
 
@@ -35,4 +42,8 @@ export const addMemoAction = async (formData: FormData) => {
   }
 
   revalidatePath('/memo');
+
+  return {
+    success: true,
+  };
 };
